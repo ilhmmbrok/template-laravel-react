@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Settings;
 
+use App\Actions\Settings\UpdateUserAvatar;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\ProfileDeleteRequest;
 use App\Http\Requests\Settings\ProfileUpdateRequest;
@@ -28,15 +29,23 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(ProfileUpdateRequest $request, UpdateUserAvatar $avatar): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $user->fill($request->safe()->except(['avatar', 'remove_avatar']));
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        $user->save();
+
+        if ($request->hasFile('avatar')) {
+            $avatar->store($user, $request);
+        } elseif ($request->boolean('remove_avatar')) {
+            $avatar->delete($user);
+        }
 
         Inertia::flash('toast', ['type' => 'success', 'message' => __('Profile updated.')]);
 
@@ -46,9 +55,10 @@ class ProfileController extends Controller
     /**
      * Delete the user's profile.
      */
-    public function destroy(ProfileDeleteRequest $request): RedirectResponse
+    public function destroy(ProfileDeleteRequest $request, UpdateUserAvatar $avatar): RedirectResponse
     {
         $user = $request->user();
+        $avatar->delete($user);
 
         Auth::logout();
 

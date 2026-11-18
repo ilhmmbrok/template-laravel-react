@@ -49,4 +49,17 @@ trait ProfileValidationRules
                 : Rule::unique(User::class)->ignore($userId),
         ];
     }
+
+    /**
+     * Get the validation rules used to validate user avatars.
+     *
+     * @return array<string, array<int, string>>
+     */
+    protected function avatarRules(): array
+    {
+        return [
+            'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+            'remove_avatar' => ['sometimes', 'boolean'],
+        ];
+    }
 }

@@ -1,6 +1,8 @@
 import { Form, Head, usePage } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
+import { useState } from 'react';
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
+import AvatarEditor from '@/components/avatar-editor';
 import DeleteUser from '@/components/delete-user';
 import Heading from '@/components/heading';
 import InputError from '@/components/input-error';
@@ -24,6 +26,9 @@ export default function Profile({
 }) {
     const { auth } = usePage<PageProps>().props;
 
+    const [avatarFile, setAvatarFile] = useState<File | null>(null);
+    const [removeAvatar, setRemoveAvatar] = useState(false);
+
     return (
         <>
             <Head title="Profile settings" />
@@ -34,7 +39,7 @@ export default function Profile({
                 <Heading
                     variant="small"
                     title="Profile"
-                    description="Update your name and email address"
+                    description="Update your photo, name, and email address"
                 />
 
                 <Form
@@ -42,10 +47,42 @@ export default function Profile({
                     options={{
                         preserveScroll: true,
                     }}
+                    transform={(data) => ({
+                        ...data,
+                        remove_avatar: removeAvatar ? 1 : 0,
+                        ...(avatarFile ? { avatar: avatarFile } : {}),
+                    })}
+                    onSuccess={() => {
+                        setAvatarFile(null);
+                        setRemoveAvatar(false);
+                    }}
                     className="space-y-6"
                 >
                     {({ processing, errors }) => (
                         <>
+                            <div className="grid gap-2">
+                                <Label>Photo</Label>
+
+                                <AvatarEditor
+                                    key={auth.user.avatar ?? 'none'}
+                                    currentUrl={auth.user.avatar ?? null}
+                                    name={auth.user.name}
+                                    onChange={(file) => {
+                                        setAvatarFile(file);
+
+                                        if (file) {
+                                            setRemoveAvatar(false);
+                                        }
+                                    }}
+                                    onRemove={() => setRemoveAvatar(true)}
+                                />
+
+                                <InputError
+                                    className="mt-2"
+                                    message={errors.avatar}
+                                />
+                            </div>
+
                             <div className="grid gap-2">
                                 <Label htmlFor="name">Name</Label>
 
