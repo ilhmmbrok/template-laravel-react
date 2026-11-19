@@ -1,8 +1,8 @@
-import { Eye, ImagePlus, RefreshCw, Trash2 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import type { ChangeEvent, DragEvent, PointerEvent } from "react";
-import AvatarPreview from "@/components/avatar-preview";
-import { Button } from "@/components/ui/button";
+import { Eye, ImagePlus, RefreshCw, Trash2 } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import type { ChangeEvent, DragEvent, PointerEvent } from 'react';
+import AvatarPreview from '@/components/avatar-preview';
+import { Button } from '@/components/ui/button';
 import {
     Dialog,
     DialogContent,
@@ -10,20 +10,20 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { useInitials } from "@/hooks/use-initials";
+} from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { useInitials } from '@/hooks/use-initials';
 
 const VIEWPORT_SIZE = 256;
 const OUTPUT_SIZE = 512;
 const MAX_FILE_SIZE = 2 * 1024 * 1024;
-const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
 const ERRORS = {
-    type: "Only JPG, PNG, or WebP images are allowed.",
-    size: "The image must be 2 MB or smaller.",
-    read: "The image could not be read.",
-    crop: "The image could not be cropped.",
+    type: 'Only JPG, PNG, or WebP images are allowed.',
+    size: 'The image must be 2 MB or smaller.',
+    read: 'The image could not be read.',
+    crop: 'The image could not be cropped.',
 };
 
 type Props = {
@@ -165,7 +165,7 @@ export default function AvatarEditor({
 
     const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
-        event.target.value = "";
+        event.target.value = '';
 
         if (file) processFile(file);
     };
@@ -227,18 +227,18 @@ export default function AvatarEditor({
     const confirmCrop = async () => {
         if (!sourceImage) return;
 
-        const canvas = document.createElement("canvas");
+        const canvas = document.createElement('canvas');
         canvas.width = OUTPUT_SIZE;
         canvas.height = OUTPUT_SIZE;
 
-        const context = canvas.getContext("2d");
+        const context = canvas.getContext('2d');
 
         if (!context) {
             setError(ERRORS.crop);
             return;
         }
 
-        context.fillStyle = "#ffffff";
+        context.fillStyle = '#ffffff';
         context.fillRect(0, 0, OUTPUT_SIZE, OUTPUT_SIZE);
 
         const scaleFactor = OUTPUT_SIZE / VIEWPORT_SIZE;
@@ -258,7 +258,7 @@ export default function AvatarEditor({
         );
 
         const blob = await new Promise<Blob | null>((resolve) => {
-            canvas.toBlob(resolve, "image/jpeg", 0.9);
+            canvas.toBlob(resolve, 'image/jpeg', 0.9);
         });
 
         if (!blob) {
@@ -267,7 +267,7 @@ export default function AvatarEditor({
         }
 
         const croppedFile = new File([blob], `avatar-${Date.now()}.jpg`, {
-            type: "image/jpeg",
+            type: 'image/jpeg',
         });
 
         setPreviewUrl(URL.createObjectURL(croppedFile));
@@ -292,13 +292,13 @@ export default function AvatarEditor({
                         type="button"
                         aria-label={
                             displayedUrl
-                                ? "View profile photo"
-                                : "Choose profile photo"
+                                ? 'View profile photo'
+                                : 'Choose profile photo'
                         }
                         className={`group relative flex size-25 items-center justify-center overflow-hidden rounded-full border bg-muted transition-colors ${
                             isDragging
-                                ? "border-primary ring-2 ring-primary/30"
-                                : ""
+                                ? 'border-primary ring-2 ring-primary/30'
+                                : ''
                         }`}
                         onClick={handleAvatarClick}
                         onDragOver={(event) => {

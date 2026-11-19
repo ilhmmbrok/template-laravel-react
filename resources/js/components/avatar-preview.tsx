@@ -13,7 +13,12 @@ type Props = {
     onOpenChange: (open: boolean) => void;
 };
 
-export default function AvatarPreview({ url, name, open, onOpenChange }: Props) {
+export default function AvatarPreview({
+    url,
+    name,
+    open,
+    onOpenChange,
+}: Props) {
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-lg">
