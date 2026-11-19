@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
+use LogicException;
 
 class AuthController extends Controller
 {
@@ -31,6 +32,12 @@ class AuthController extends Controller
         }
 
         $user = $creator->create($input);
+
+        if (! $user instanceof User) {
+            throw new LogicException(
+                'User must be an instance of '.User::class
+            );
+        }
 
         event(new Registered($user));
 

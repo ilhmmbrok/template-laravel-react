@@ -53,6 +53,11 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
         ];
     }
 
+    /**
+     * Get the user's avatar URL.
+     *
+     * @return Attribute<string|null, never>
+     */
     protected function avatar(): Attribute
     {
         return Attribute::get(
