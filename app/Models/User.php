@@ -37,7 +37,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, HasApiTokens, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable;
+    use HasApiTokens, HasFactory, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable;
 
     /**
      * Get the attributes that should be cast.
@@ -56,7 +56,7 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
     protected function avatar(): Attribute
     {
         return Attribute::get(
-            fn(): ?string => $this->avatar_path
+            fn (): ?string => $this->avatar_path
                 ? Storage::disk('public')->url($this->avatar_path)
                 : null,
         );

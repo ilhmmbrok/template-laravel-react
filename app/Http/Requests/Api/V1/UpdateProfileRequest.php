@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 class UpdateProfileRequest extends FormRequest
 {
     use ProfileValidationRules;
+
     /**
      * Get the validation rules that apply to the request.
      *

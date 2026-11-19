@@ -24,7 +24,7 @@ class TwoFactorChallengeController extends Controller
             'recovery_code' => ['nullable', 'string', 'required_without:code'],
         ]);
 
-        $key = 'api-two-factor:' . hash('sha256', $request->input('challenge_token'));
+        $key = 'api-two-factor:'.hash('sha256', $request->input('challenge_token'));
         $challenge = Cache::get($key);
 
         if ($challenge === null) {
@@ -61,7 +61,7 @@ class TwoFactorChallengeController extends Controller
         }
 
         $code = collect($user->recoveryCodes())
-            ->first(fn(string $code) => hash_equals($code, $request->input('recovery_code')));
+            ->first(fn (string $code) => hash_equals($code, $request->input('recovery_code')));
 
         if ($code === null) {
             return false;

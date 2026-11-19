@@ -63,7 +63,7 @@ class AuthController extends Controller
             $challenge = Str::random(64);
 
             Cache::put(
-                'api-two-factor:' . hash('sha256', $challenge),
+                'api-two-factor:'.hash('sha256', $challenge),
                 [
                     'user_id' => $user->id,
                     'device_name' => $credentials['device_name'],
