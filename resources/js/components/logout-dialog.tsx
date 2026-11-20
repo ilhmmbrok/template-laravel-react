@@ -1,7 +1,7 @@
-import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
-import { logout } from '@/routes';
-import { router } from '@inertiajs/react';
-import { ReactNode, useState } from 'react';
+import { useMobileNavigation } from "@/hooks/use-mobile-navigation";
+import { logout } from "@/routes";
+import { router } from "@inertiajs/react";
+import { ReactNode, useState } from "react";
 import {
     Dialog,
     DialogContent,
@@ -10,10 +10,10 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from './ui/dialog';
-import { Button } from './ui/button';
-import { Spinner } from './ui/spinner';
-import { LogOut } from 'lucide-react';
+} from "./ui/dialog";
+import { Button } from "./ui/button";
+import { Spinner } from "./ui/spinner";
+import { LogOut } from "lucide-react";
 
 type Props = {
     children: ReactNode;
@@ -46,25 +46,25 @@ export function LogoutDialog({ children }: Props) {
                     <DialogDescription>
                         This action will log you out of your account.
                     </DialogDescription>
-                    <DialogFooter>
-                        <Button
-                            variant="outline"
-                            onClick={() => setOpen(false)}
-                            disabled={processing}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            variant="destructive"
-                            onClick={handleLogout}
-                            disabled={processing}
-                            data-test="confirm-logout-button"
-                        >
-                            {processing ? <Spinner /> : <LogOut />}
-                            Log out
-                        </Button>
-                    </DialogFooter>
                 </DialogHeader>
+                <DialogFooter>
+                    <Button
+                        variant="outline"
+                        onClick={() => setOpen(false)}
+                        disabled={processing}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        variant="destructive"
+                        onClick={handleLogout}
+                        disabled={processing}
+                        data-test="confirm-logout-button"
+                    >
+                        {processing ? <Spinner /> : <LogOut />}
+                        Log out
+                    </Button>
+                </DialogFooter>
             </DialogContent>
         </Dialog>
     );
